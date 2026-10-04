@@ -26,10 +26,14 @@ def is_public(address):
         or ip.is_multicast
         or ip.is_unspecified
         or ip.is_reserved
+        or ip.is_loopback
+        or ip.is_link_local
         or getattr(ip, "ipv4_mapped", None)
     ):
         return False
     if isinstance(ip, ipaddress.IPv6Address):
+        if ip.is_site_local:
+            return False
         # Translation/tunnel forms can disguise a non-public IPv4 destination.
         if ip in ipaddress.ip_network("64:ff9b::/96") or ip in ipaddress.ip_network(
             "64:ff9b:1::/48"
