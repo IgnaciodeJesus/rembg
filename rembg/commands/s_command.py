@@ -1,8 +1,8 @@
-import os
+import logging
 import re
-import tempfile
 import webbrowser
-from typing import Optional, Tuple, cast
+from io import BytesIO
+from typing import Optional
 
 import click
 import gradio as gr
@@ -10,19 +10,15 @@ import uvicorn
 from asyncer import asyncify
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from PIL import Image
 from starlette.responses import Response
 
 from .. import __version__
 from ..bg import remove
-from ..server_security import (
-    MAX_IMAGE_BYTES,
-    RequestSizeLimit,
-    fetch_image,
-    server_options,
-)
+from ..server_processing import ImageProcessor, background_color
+from ..server_security import MAX_IMAGE_BYTES, RequestSizeLimit, fetch_image
 from ..session_factory import new_session
 from ..sessions import sessions_names
-from ..sessions.base import BaseSession
 
 
 @click.command(  # type: ignore
@@ -57,9 +53,9 @@ from ..sessions.base import BaseSession
     "-t",
     "--threads",
     default=None,
-    type=int,
+    type=click.IntRange(1, 8),
     show_default=True,
-    help="number of worker threads",
+    help="number of worker threads (inference remains serialized)",
 )
 def s_command(port: int, host: str, log_level: str, threads: int) -> None:
     """
@@ -68,8 +64,20 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
     This function starts the FastAPI web server with the specified port and log level.
     If the number of worker threads is specified, it sets the thread limiter accordingly.
     """
-    sessions: dict[str, BaseSession] = {}
+    uvicorn.run(
+        create_server_app(port, threads, open_browser=True),
+        host=host,
+        port=port,
+        log_level=log_level,
+        limit_concurrency=16,
+        access_log=False,
+    )
+
+
+def create_server_app(port=7000, threads=None, open_browser=False):
+    """Construct the optional server without opening a socket or loading weights."""
     http_models = [name for name in sessions_names if not name.endswith("_custom")]
+    processor = ImageProcessor(new_session, remove, http_models)
     model_pattern = r"^(?:" + "|".join(re.escape(name) for name in http_models) + r")$"
     tags_metadata = [
         {
@@ -128,7 +136,10 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
                 description="Alpha Matting (Background Threshold)",
             ),
             ae: int = Query(
-                default=10, ge=0, description="Alpha Matting (Erode Structure Size)"
+                default=10,
+                ge=0,
+                le=255,
+                description="Alpha Matting (Erode Structure Size)",
             ),
             om: bool = Query(default=False, description="Only Mask"),
             ppm: bool = Query(default=False, description="Post Process Mask"),
@@ -145,11 +156,7 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
             self.om = om
             self.ppm = ppm
             self.extras = extras
-            self.bgc = (
-                cast(Tuple[int, int, int, int], tuple(map(int, bgc.split(","))))
-                if bgc
-                else None
-            )
+            self.bgc = background_color(bgc)
 
     class CommonQueryPostParams:
         def __init__(
@@ -173,7 +180,10 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
                 description="Alpha Matting (Background Threshold)",
             ),
             ae: int = Form(
-                default=10, ge=0, description="Alpha Matting (Erode Structure Size)"
+                default=10,
+                ge=0,
+                le=255,
+                description="Alpha Matting (Erode Structure Size)",
             ),
             om: bool = Form(default=False, description="Only Mask"),
             ppm: bool = Form(default=False, description="Post Process Mask"),
@@ -190,26 +200,14 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
             self.om = om
             self.ppm = ppm
             self.extras = extras
-            self.bgc = (
-                cast(Tuple[int, int, int, int], tuple(map(int, bgc.split(","))))
-                if bgc
-                else None
-            )
+            self.bgc = background_color(bgc)
 
     def im_without_bg(content: bytes, commons: CommonQueryParams) -> Response:
-        if len(content) > MAX_IMAGE_BYTES:
-            raise HTTPException(413, "Image exceeds server size limit")
-        kwargs = server_options(commons.extras)
-
-        session = sessions.get(commons.model)
-        if session is None:
-            session = new_session(commons.model, **kwargs)
-            sessions[commons.model] = session
-
         return Response(
-            remove(
+            processor.process(
                 content,
-                session=session,
+                commons.model,
+                extras=commons.extras,
                 alpha_matting=commons.a,
                 alpha_matting_foreground_threshold=commons.af,
                 alpha_matting_background_threshold=commons.ab,
@@ -217,7 +215,6 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
                 only_mask=commons.om,
                 post_process_mask=commons.ppm,
                 bgcolor=commons.bgc,
-                **kwargs,
             ),
             media_type="image/png",
         )
@@ -225,9 +222,12 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
     @app.on_event("startup")
     def startup():
         try:
-            webbrowser.open(f"http://localhost:{port}")
+            if open_browser:
+                webbrowser.open(f"http://localhost:{port}")
         except Exception:
-            pass
+            logging.getLogger(__name__).info(
+                "Browser launch unavailable; server continues"
+            )
 
         if threads is not None:
             from anyio import CapacityLimiter
@@ -278,23 +278,21 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
                 "post_process_mask": ppm,
             }
 
-            if cmd_args:
-                kwargs.update(server_options(cmd_args))
             with open(input_path, "rb") as i:
                 input = i.read(MAX_IMAGE_BYTES + 1)
             if len(input) > MAX_IMAGE_BYTES:
                 raise ValueError("Image exceeds server size limit")
-            kwargs["session"] = new_session(model, **kwargs)
-            output = remove(input, **kwargs)
-            descriptor, output_path = tempfile.mkstemp(prefix="rembg-", suffix=".png")
-            with os.fdopen(descriptor, "wb") as o:
-                o.write(output)
-            return os.path.join(output_path)
+            output = processor.process(input, model, extras=cmd_args, **kwargs)
+            # Gradio owns this image's cache lifecycle; no untracked temp file.
+            with Image.open(BytesIO(output)) as result:
+                return result.copy()
 
         interface = gr.Interface(
             inference,
             [
-                gr.components.Image(type="filepath", label="Input"),
+                gr.components.File(
+                    type="filepath", file_types=["image"], label="Input"
+                ),
                 gr.components.Dropdown(http_models, value="u2net", label="Models"),
                 gr.components.Checkbox(value=True, label="Alpha matting"),
                 gr.components.Slider(
@@ -310,21 +308,20 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
                 gr.components.Checkbox(value=True, label="Post process mask"),
                 gr.components.Textbox(label="Arguments"),
             ],
-            gr.components.Image(type="filepath", label="Output"),
-            concurrency_limit=3,
+            gr.components.Image(type="pil", label="Output"),
+            concurrency_limit=1,
+            delete_cache=(60, 3600),
             analytics_enabled=False,
+            api_name="remove_background",
+            flagging_mode="never",
         )
 
-        app = gr.mount_gradio_app(app, interface, path="/")
+        interface.queue(max_size=4, api_open=False, default_concurrency_limit=1)
+        app.state.rembg_interface = interface
+        app.state.rembg_processor = processor
+        app = gr.mount_gradio_app(
+            app, interface, path="/", max_file_size=MAX_IMAGE_BYTES, show_error=False
+        )
         return app
 
-    print(
-        f"To access the API documentation, go to http://{'localhost' if host == '0.0.0.0' else host}:{port}/api"
-    )
-    print(
-        f"To access the UI, go to http://{'localhost' if host == '0.0.0.0' else host}:{port}"
-    )
-
-    uvicorn.run(
-        RequestSizeLimit(gr_app(app)), host=host, port=port, log_level=log_level
-    )
+    return RequestSizeLimit(gr_app(app))

@@ -17,6 +17,8 @@ jobs:
               with:
                   persist-credentials: false
             - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+              with:
+                  python-version: "3.13"
             - name: Install Poetry
               uses: snok/install-poetry@a783c322200f0519c7926aa6faa857c4e23e9263 # v1
               with:
@@ -29,3 +31,4 @@ jobs:
             - run: poetry run black --force-exclude rembg/_version.py --check --diff ./rembg
             - run: poetry run flake8 ./rembg --count --ignore=B008,C901,E203,E266,E731,F401,F811,F841,W503,E501,E402 --show-source --statistics --exclude ./rembg/_version.py
             - run: poetry run isort --check-only --profile black ./rembg
+            - run: poetry run python -m unittest discover -s tests -p "test_server_*.py" -v
