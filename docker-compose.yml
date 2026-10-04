@@ -1,15 +1,15 @@
 ---
 # You can set variables in .env file in root folder
 #
-# PUBLIC_PORT=7000:7000
+# PUBLIC_PORT=127.0.0.1:7000:7000
 # REPLICAS_COUNT=1
 
 services:
   app:
     build: .
-    command: ["s"]
+    command: ["s", "--host", "0.0.0.0"]
     deploy:
       replicas: ${REPLICAS_COUNT:-1}
     ports:
-      - ${PUBLIC_PORT:-7000:7000}
+      - ${PUBLIC_PORT:-127.0.0.1:7000:7000}
 version: '3'

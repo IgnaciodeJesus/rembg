@@ -1,19 +1,25 @@
-import json
 import os
+import re
+import tempfile
 import webbrowser
 from typing import Optional, Tuple, cast
 
-import aiohttp
 import click
 import gradio as gr
 import uvicorn
 from asyncer import asyncify
-from fastapi import Depends, FastAPI, File, Form, Query
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import Response
 
 from .. import __version__
 from ..bg import remove
+from ..server_security import (
+    MAX_IMAGE_BYTES,
+    RequestSizeLimit,
+    fetch_image,
+    server_options,
+)
 from ..session_factory import new_session
 from ..sessions import sessions_names
 from ..sessions.base import BaseSession
@@ -34,7 +40,7 @@ from ..sessions.base import BaseSession
 @click.option(
     "-h",
     "--host",
-    default="0.0.0.0",
+    default="127.0.0.1",
     type=str,
     show_default=True,
     help="host",
@@ -63,6 +69,8 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
     If the number of worker threads is specified, it sets the thread limiter accordingly.
     """
     sessions: dict[str, BaseSession] = {}
+    http_models = [name for name in sessions_names if not name.endswith("_custom")]
+    model_pattern = r"^(?:" + "|".join(re.escape(name) for name in http_models) + r")$"
     tags_metadata = [
         {
             "name": "Background Removal",
@@ -92,10 +100,10 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
 
     app.add_middleware(
         CORSMiddleware,
-        allow_credentials=True,
-        allow_origins=["*"],
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_credentials=False,
+        allow_origins=[],
+        allow_methods=["GET", "POST"],
+        allow_headers=["Content-Type"],
     )
 
     class CommonQueryParams:
@@ -103,7 +111,7 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
             self,
             model: str = Query(
                 description="Model to use when processing image",
-                regex=r"(" + "|".join(sessions_names) + ")",
+                regex=model_pattern,
                 default="u2net",
             ),
             a: bool = Query(default=False, description="Enable Alpha Matting"),
@@ -148,7 +156,7 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
             self,
             model: str = Form(
                 description="Model to use when processing image",
-                regex=r"(" + "|".join(sessions_names) + ")",
+                regex=model_pattern,
                 default="u2net",
             ),
             a: bool = Form(default=False, description="Enable Alpha Matting"),
@@ -189,13 +197,9 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
             )
 
     def im_without_bg(content: bytes, commons: CommonQueryParams) -> Response:
-        kwargs = {}
-
-        if commons.extras:
-            try:
-                kwargs.update(json.loads(commons.extras))
-            except Exception:
-                pass
+        if len(content) > MAX_IMAGE_BYTES:
+            raise HTTPException(413, "Image exceeds server size limit")
+        kwargs = server_options(commons.extras)
 
         session = sessions.get(commons.model)
         if session is None:
@@ -243,10 +247,8 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
         ),
         commons: CommonQueryParams = Depends(),
     ):
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
-                file = await response.read()
-                return await asyncify(im_without_bg)(file, commons)
+        file = await fetch_image(url)
+        return await asyncify(im_without_bg)(file, commons)
 
     @app.post(
         path="/api/remove",
@@ -265,7 +267,6 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
 
     def gr_app(app):
         def inference(input_path, model, *args):
-            output_path = "output.png"
             a, af, ab, ae, om, ppm, cmd_args = args
 
             kwargs = {
@@ -278,21 +279,23 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
             }
 
             if cmd_args:
-                kwargs.update(json.loads(cmd_args))
-            kwargs["session"] = new_session(model, **kwargs)
-
+                kwargs.update(server_options(cmd_args))
             with open(input_path, "rb") as i:
-                with open(output_path, "wb") as o:
-                    input = i.read()
-                    output = remove(input, **kwargs)
-                    o.write(output)
+                input = i.read(MAX_IMAGE_BYTES + 1)
+            if len(input) > MAX_IMAGE_BYTES:
+                raise ValueError("Image exceeds server size limit")
+            kwargs["session"] = new_session(model, **kwargs)
+            output = remove(input, **kwargs)
+            descriptor, output_path = tempfile.mkstemp(prefix="rembg-", suffix=".png")
+            with os.fdopen(descriptor, "wb") as o:
+                o.write(output)
             return os.path.join(output_path)
 
         interface = gr.Interface(
             inference,
             [
                 gr.components.Image(type="filepath", label="Input"),
-                gr.components.Dropdown(sessions_names, value="u2net", label="Models"),
+                gr.components.Dropdown(http_models, value="u2net", label="Models"),
                 gr.components.Checkbox(value=True, label="Alpha matting"),
                 gr.components.Slider(
                     value=240, minimum=0, maximum=255, label="Foreground threshold"
@@ -322,4 +325,6 @@ def s_command(port: int, host: str, log_level: str, threads: int) -> None:
         f"To access the UI, go to http://{'localhost' if host == '0.0.0.0' else host}:{port}"
     )
 
-    uvicorn.run(gr_app(app), host=host, port=port, log_level=log_level)
+    uvicorn.run(
+        RequestSizeLimit(gr_app(app)), host=host, port=port, log_level=log_level
+    )
