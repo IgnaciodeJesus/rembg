@@ -29,7 +29,7 @@ class URLBoundaryTest(unittest.TestCase):
             "http://239.255.255.250/",
             "http://[ff02::1]/",
             "http://[ff01::1]/",
-                    "http://[fec0::1]/",
+            "http://[fec0::1]/",
             "https://user:pass@example.org/",
             "https://example.org:8443/",
             "https://localhost/",
