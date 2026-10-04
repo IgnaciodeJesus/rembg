@@ -24,7 +24,12 @@ retry. This does not establish a killable inference deadline or an OS memory
 limit: those remain necessary before an exposed multiuser service.
 
 The UI uses a file upload so Gradio does not decode an unchecked image during
-input preprocessing. Output is an image owned by Gradio's cache, without a second
+input preprocessing. Raw FileData across all input components is validated
+before Gradio's cache mover: only regular files registered by this interface's
+bounded upload endpoint and contained in its upload cache are accepted. Remote
+URLs, foreign local paths and symlinks are rejected before download/copy or
+model construction. Component validators alone are too late for this boundary.
+Output is an image owned by Gradio's cache, without a second
 untracked temporary file. Cache cleanup runs every60 seconds for files older
 than one hour, and manual flagging is disabled. This bounds retention time, not
 disk consumption under arbitrary sustained traffic; an authenticated proxy,
@@ -55,7 +60,7 @@ References: [OWASP2025](https://top10.owasp.org/2025/),
 
 The server extras now require patched Gradio6.29.1, FastAPI0.142.2,
 Starlette1.7.0 and python-multipart0.0.32 or later compatible versions. A fresh
-isolated CPU/CLI installation from official PyPI passed `pip check`, the14
+isolated CPU/CLI installation from official PyPI passed `pip check`, the15
 server tests and a query of84 package/version pairs with no known OSV advisories
 on2026-10-04 UTC. This is a dated dependency check, not assurance against future
 advisories. Existing installations must reinstall the updated extras; no shared

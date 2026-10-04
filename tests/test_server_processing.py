@@ -11,7 +11,7 @@ import threading
 import unittest
 from io import BytesIO
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import AsyncMock, Mock, patch
 
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
@@ -152,6 +152,75 @@ class MountedServerTest(unittest.TestCase):
         env = patch.dict(os.environ, {"GRADIO_TEMP_DIR": self.cache.name})
         env.start()
         self.addCleanup(env.stop)
+
+    def test_raw_ui_inputs_cannot_download_urls_or_copy_foreign_files(self):
+        png = image_bytes()
+        factory = Mock(return_value=object())
+        with patch.object(server, "new_session", factory), patch.object(
+            server, "remove", return_value=png
+        ), tempfile.TemporaryDirectory() as directory:
+            foreign = Path(directory) / "foreign.png"
+            foreign.write_bytes(png)
+            app = server.create_server_app()
+            interface = app.app.state.rembg_interface
+            with TestClient(app) as client:
+                upload = client.post(
+                    "/gradio_api/upload",
+                    files={"files": ("test.png", png, "image/png")},
+                )
+                self.assertEqual(upload.status_code, 200)
+                uploaded = upload.json()[0]
+                meta = {"_type": "gradio.FileData"}
+                link = Path(self.cache.name) / "foreign-link.png"
+                link.symlink_to(foreign)
+                interface.upload_file_set.add(str(link))
+                unregistered = Path(self.cache.name) / "not-uploaded.png"
+                unregistered.write_bytes(png)
+                cases = [
+                    (0, "https://synthetic.invalid/image.png"),
+                    (0, str(foreign)),
+                    (0, str(link)),
+                    (0, str(unregistered)),
+                    # Cache movement precedes validation for every component,
+                    # including a FileData injected into the Arguments textbox.
+                    (8, "https://synthetic.invalid/nested.png"),
+                ]
+                for index, path in cases:
+                    with self.subTest(index=index, path_kind=Path(path).name):
+                        data = [
+                            {"path": uploaded, "meta": meta},
+                            "u2net",
+                            False,
+                            240,
+                            10,
+                            10,
+                            False,
+                            False,
+                            "",
+                        ]
+                        data[index] = {"path": path, "meta": meta}
+                        with patch(
+                            "gradio.processing_utils.async_ssrf_protected_download",
+                            new_callable=AsyncMock,
+                        ) as download, patch.object(
+                            interface.input_components[0],
+                            "async_move_resource_to_block_cache",
+                            new_callable=AsyncMock,
+                        ) as copy:
+                            prediction = client.post(
+                                "/gradio_api/call/remove_background",
+                                json={"data": data},
+                            )
+                            self.assertEqual(prediction.status_code, 200)
+                            result = client.get(
+                                "/gradio_api/call/remove_background/"
+                                + prediction.json()["event_id"]
+                            )
+                            self.assertIn("event: error", result.text, result.text)
+                            download.assert_not_called()
+                            copy.assert_not_called()
+                            factory.assert_not_called()
+                self.assertEqual(foreign.read_bytes(), png)
 
     def test_mounted_ui_upload_and_api_share_validation_and_cached_session(self):
         png = image_bytes()

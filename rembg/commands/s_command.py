@@ -8,7 +8,7 @@ import click
 import gradio as gr
 import uvicorn
 from asyncer import asyncify
-from fastapi import Depends, FastAPI, File, Form, HTTPException, Query
+from fastapi import Depends, FastAPI, File, Form, Query
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 from starlette.responses import Response
@@ -287,7 +287,9 @@ def create_server_app(port=7000, threads=None, open_browser=False):
             with Image.open(BytesIO(output)) as result:
                 return result.copy()
 
-        interface = gr.Interface(
+        from ..server_ui import UploadOnlyInterface
+
+        interface = UploadOnlyInterface(
             inference,
             [
                 gr.components.File(
