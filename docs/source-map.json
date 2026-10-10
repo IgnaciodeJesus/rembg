@@ -1,0 +1,258 @@
+{
+  "date": "2026-10-10",
+  "source_commit": "c9bc20d",
+  "range_convention": "one-based inclusive",
+  "files": {
+    "rembg/commands/s_command.py": {
+      "lines": 329,
+      "sha256": "a2cb9e216d6a390a6cf4d007945e6ec6f983adb0c05d2c239f6fbc8e189c43de",
+      "symbols": [
+        {
+          "name": "s_command",
+          "start_line": 60,
+          "end_line": 74
+        },
+        {
+          "name": "create_server_app",
+          "start_line": 77,
+          "end_line": 329
+        },
+        {
+          "name": "CommonQueryParams",
+          "start_line": 117,
+          "end_line": 159
+        },
+        {
+          "name": "CommonQueryPostParams",
+          "start_line": 161,
+          "end_line": 203
+        },
+        {
+          "name": "im_without_bg",
+          "start_line": 205,
+          "end_line": 220
+        },
+        {
+          "name": "startup",
+          "start_line": 223,
+          "end_line": 236
+        },
+        {
+          "name": "get_index",
+          "start_line": 244,
+          "end_line": 251
+        },
+        {
+          "name": "post_index",
+          "start_line": 259,
+          "end_line": 266
+        },
+        {
+          "name": "gr_app",
+          "start_line": 268,
+          "end_line": 327
+        },
+        {
+          "name": "__init__",
+          "start_line": 118,
+          "end_line": 159
+        },
+        {
+          "name": "__init__",
+          "start_line": 162,
+          "end_line": 203
+        },
+        {
+          "name": "inference",
+          "start_line": 269,
+          "end_line": 288
+        }
+      ]
+    },
+    "rembg/server_ui.py": {
+      "lines": 44,
+      "sha256": "0a61d01dc36a1140ca86a62e6ded705294054c2f321af34142b1e7c1257a6996",
+      "symbols": [
+        {
+          "name": "UploadOnlyInterface",
+          "start_line": 12,
+          "end_line": 44
+        },
+        {
+          "name": "preprocess_data",
+          "start_line": 20,
+          "end_line": 44
+        },
+        {
+          "name": "require_upload",
+          "start_line": 21,
+          "end_line": 39
+        }
+      ]
+    },
+    "rembg/server_security.py": {
+      "lines": 261,
+      "sha256": "5902ada793d2e46f321f75bcea2a3d5da9c8e3f2dbbba6c5717092bf867ef2e6",
+      "symbols": [
+        {
+          "name": "is_public",
+          "start_line": 22,
+          "end_line": 44
+        },
+        {
+          "name": "public_url",
+          "start_line": 47,
+          "end_line": 74
+        },
+        {
+          "name": "PublicResolver",
+          "start_line": 77,
+          "end_line": 99
+        },
+        {
+          "name": "fetch_image",
+          "start_line": 102,
+          "end_line": 141
+        },
+        {
+          "name": "server_options",
+          "start_line": 144,
+          "end_line": 193
+        },
+        {
+          "name": "RequestSizeLimit",
+          "start_line": 196,
+          "end_line": 261
+        },
+        {
+          "name": "resolve",
+          "start_line": 80,
+          "end_line": 96
+        },
+        {
+          "name": "close",
+          "start_line": 98,
+          "end_line": 99
+        },
+        {
+          "name": "__init__",
+          "start_line": 199,
+          "end_line": 200
+        },
+        {
+          "name": "__call__",
+          "start_line": 202,
+          "end_line": 261
+        },
+        {
+          "name": "replay",
+          "start_line": 254,
+          "end_line": 259
+        }
+      ]
+    },
+    "rembg/bg.py": {
+      "lines": 335,
+      "sha256": "60123651bcb0fc8b1380a95eb7cb15de187a2c49205d319396f6db1f17066831",
+      "symbols": [
+        {
+          "name": "ReturnType",
+          "start_line": 39,
+          "end_line": 42
+        },
+        {
+          "name": "alpha_matting_cutout",
+          "start_line": 45,
+          "end_line": 95
+        },
+        {
+          "name": "naive_cutout",
+          "start_line": 98,
+          "end_line": 111
+        },
+        {
+          "name": "putalpha_cutout",
+          "start_line": 114,
+          "end_line": 126
+        },
+        {
+          "name": "get_concat_v_multi",
+          "start_line": 129,
+          "end_line": 142
+        },
+        {
+          "name": "get_concat_v",
+          "start_line": 145,
+          "end_line": 159
+        },
+        {
+          "name": "post_process",
+          "start_line": 162,
+          "end_line": 172
+        },
+        {
+          "name": "apply_background_color",
+          "start_line": 175,
+          "end_line": 189
+        },
+        {
+          "name": "fix_image_orientation",
+          "start_line": 192,
+          "end_line": 202
+        },
+        {
+          "name": "download_models",
+          "start_line": 205,
+          "end_line": 223
+        },
+        {
+          "name": "remove",
+          "start_line": 226,
+          "end_line": 335
+        }
+      ]
+    },
+    "rembg/session_factory.py": {
+      "lines": 48,
+      "sha256": "3d3082464e3f976b223e29d0f873ea3bbe80c3ec54238fe0ad1aecb090755236",
+      "symbols": [
+        {
+          "name": "new_session",
+          "start_line": 11,
+          "end_line": 48
+        }
+      ]
+    },
+    "rembg/server_processing.py": {
+      "lines": 114,
+      "sha256": "fa2d8c802cbbd0e4189498785e36f83340256850e1ebec3e860c776c4d618bf6",
+      "symbols": [
+        {
+          "name": "validate_image",
+          "start_line": 22,
+          "end_line": 47
+        },
+        {
+          "name": "background_color",
+          "start_line": 50,
+          "end_line": 62
+        },
+        {
+          "name": "ImageProcessor",
+          "start_line": 65,
+          "end_line": 114
+        },
+        {
+          "name": "__init__",
+          "start_line": 68,
+          "end_line": 74
+        },
+        {
+          "name": "process",
+          "start_line": 76,
+          "end_line": 114
+        }
+      ]
+    }
+  }
+}
