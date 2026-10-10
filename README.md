@@ -12,6 +12,10 @@
 
 Rembg is a tool to remove image backgrounds. It can be used as a CLI, Python library, HTTP server, or Docker container.
 
+For this fork, see the [passive source/server review](docs/server.md) and the
+[Gradio interface map](docs/pages/interface.md). The 2026-10-10 review documents
+source responsibilities and limits; it does not run inference or download models.
+
 **If this project has helped you, please consider making a [donation](https://www.buymeacoffee.com/danielgatis).**
 
 ## Sponsors
