@@ -23,9 +23,14 @@ están en [SECURITY.md](../SECURITY.md); no se duplican aquí como certificació
 
 Se contrastaron documentación, código de construcción, límites y workflows de
 publicación. No hay instalación/servicio público demostrado por la presencia de
-código. Publicar a PyPI requiere tags `v*.*.*`; la propuesta documental no crea
-tags ni distribuye paquetes. Docker y el instalador Windows también se publican
-sólo desde tags `v*.*.*`. El workflow de lint se activa con push/PR, instala
+código. Los workflows de PyPI, Docker y el instalador Windows declaran publicación
+desde tags `v*.*.*`; la propuesta documental no crea tags ni distribuye paquetes.
+El workflow Docker de la fuente tiene un error de indentación en `with:`
+([workflow Docker](../.github/workflows/publish_docker.yml), línea 18). GitHub registró el fallo de
+validación sin jobs tanto en la [fuente `c9bc20d`](https://github.com/IgnaciodeJesus/rembg/actions/runs/37175922632)
+como en la [rama documental](https://github.com/IgnaciodeJesus/rembg/actions/runs/38042332841); la
+condición de tags no acredita que el workflow sea ejecutable. Queda pendiente
+corregirlo en un trabajo separado. El workflow de lint se activa con push/PR, instala
 dependencias CPU/CLI y ejecuta comprobaciones estáticas y pruebas del servidor con
 fixtures sintéticos, llamadas simuladas y un grafo ONNX de ejemplo; este trabajo
 documental no lo modificó ni ejecutó localmente. El uso HTTP exige que el consumidor establezca
