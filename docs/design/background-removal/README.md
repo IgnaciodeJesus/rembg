@@ -46,13 +46,13 @@ La imagen muestra UploadOnlyInterface, FileInput, ModelsDropdown, AlphaMatting, 
 
 ![Eliminar fondo · interfaz Gradio: models-open desktop](models-open-desktop.png)
 
-La imagen muestra UploadOnlyInterface, FileInput, ModelsDropdown, AlphaMatting, Thresholds, MaskControls, Arguments, OutputImage, SubmitQueue. Resolución de navegador 1365×900; captura de la página completa, tema solicitado light.
+La imagen muestra FileInput, ModelsDropdown abierto y OutputImage vacío. El menú de modelos oculta AlphaMatting, Thresholds, MaskControls y Arguments, y cubre parte de las acciones Clear/Submit. Resolución de navegador 1365×900; captura de la página completa, tema solicitado light.
 
 ### models-open · mobile
 
 ![Eliminar fondo · interfaz Gradio: models-open mobile](models-open-mobile.png)
 
-La imagen muestra UploadOnlyInterface, FileInput, ModelsDropdown, AlphaMatting, Thresholds, MaskControls, Arguments, OutputImage, SubmitQueue. Resolución de navegador 390×844; captura de la página completa, tema solicitado light.
+La imagen muestra FileInput, ModelsDropdown abierto y OutputImage vacío. El menú de modelos oculta AlphaMatting, Thresholds, MaskControls y Arguments; las acciones Clear y Submit quedan visibles debajo del menú. Resolución de navegador 390×844; captura de la página completa, tema solicitado light.
 
 ## Verificación y límites
 
