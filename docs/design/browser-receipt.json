@@ -1,0 +1,857 @@
+{
+  "project": "rembg",
+  "sourceCommit": "59c892db84777afda2bac85f9d44cb2454b8ec4f",
+  "sourceHashes": {
+    "rembg/server_security.py": "5902ada793d2e46f321f75bcea2a3d5da9c8e3f2dbbba6c5717092bf867ef2e6",
+    "rembg/server_ui.py": "0a61d01dc36a1140ca86a62e6ded705294054c2f321af34142b1e7c1257a6996",
+    "rembg/bg.py": "60123651bcb0fc8b1380a95eb7cb15de187a2c49205d319396f6db1f17066831",
+    "rembg/cli.py": "b71016eff67bba4f4df3edc8104d81773b4d64cca38d193d55922d7130c4a417",
+    "rembg/session_factory.py": "3d3082464e3f976b223e29d0f873ea3bbe80c3ec54238fe0ad1aecb090755236",
+    "rembg/server_processing.py": "fa2d8c802cbbd0e4189498785e36f83340256850e1ebec3e860c776c4d618bf6",
+    "rembg/__init__.py": "f415e8a717d9e7d486684db6a971b2eb62b7a71a96f67b09fbce66ecaff671d1",
+    "rembg/sessions/birefnet_hrsod.py": "e0903f0847e2e170965dc2995e3b16d9fbd64862cfddc2b26cfc032ee33b0236",
+    "rembg/sessions/dis_general_use.py": "cb55eb89ecf61ca637df0525d68bd4bf4e0b2c8da800f6cce28edca094546613",
+    "rembg/sessions/u2net.py": "c28bbff6593b05e7238e868b9b525cb84e70dd29bfa5489c3ff0ce8dd159bfb0",
+    "rembg/sessions/dis_anime.py": "35c39e5d17c3d81fb4e02ea01399b88e0c560c74dd0ed9ffc3ba69ea0b36ff7f",
+    "rembg/sessions/birefnet_portrait.py": "101bda6b026eac0df084de2392f7d5a88e755abe92d8d58ea204c2b4d25d4887",
+    "rembg/sessions/birefnet_cod.py": "0157fa4810caaf1fa6e7aaf4a5b2126adb4237fb47267b4336496df58756e2a3",
+    "rembg/sessions/u2net_custom.py": "e96d592c0b271f5d0745db7d8b87ea82bb6a15dfcc85f7d81a8e72f582ab58b9",
+    "rembg/sessions/birefnet_general_lite.py": "ba56a8d0e36853fdc88f4205e2305e5d27a30dfc4bbf935539db588f60d4bc23",
+    "rembg/sessions/dis_custom.py": "9225c1d4084f80d8c2880f4398cf254c67c4345bdfff3173e07036c25a28d865",
+    "rembg/sessions/u2netp.py": "f0f0f344f5bb19505ab3570d226a73512f99ff28b021d563247776a44969b501",
+    "rembg/sessions/birefnet_dis.py": "bef80ffd04f8412295c3bf3f5b7ba4b48c06d1cc86254eb2a72fd0c83d65bb53",
+    "rembg/sessions/base.py": "2d48f2f0df33763e8133533c8881a498b4fd5eb39f9f7566561e6e1f38ff558c",
+    "rembg/sessions/u2net_cloth_seg.py": "19291f71d0f9f328e37861c70aae923a00507d02caf9bfa3dc61c3f36a706910",
+    "rembg/sessions/birefnet_general.py": "2b259a1d63e6ebb042e20abfd957b7fddce66a8c661c3c130e6bc9ffbf597193",
+    "rembg/sessions/ben_custom.py": "0453c8e5f4d0920a79c2f432960eb73c98174b98d3ea16059f7c5d681e9d0344",
+    "rembg/sessions/bria_rmbg.py": "e7c18a8d72563dd5ddddd59ae99478c57b611d693992385d41a5af0a2a578be8",
+    "rembg/sessions/u2net_human_seg.py": "fdb781c337e275192273fc8c78735bb5188d5f1de5b643547d9bcb0c81a788d8",
+    "rembg/sessions/silueta.py": "a4036e0b629e2ac93d54f7786be3c0657a2bef53839a5e842f67ebdb7934d3a5",
+    "rembg/sessions/birefnet_massive.py": "d6f3a1a82931f310d239c5795a4ec14567934e2cad65ec5f765e52450eb2da17",
+    "rembg/sessions/__init__.py": "6a9c9b099789291a52b97d4d834627e5bfc3308204f31dd546290fbdf34280eb",
+    "rembg/sessions/sam.py": "bfba625a16a40e2283d0f45007ddebd048fadd31e35d3fd99a74a4f95253c69b",
+    "rembg/commands/i_command.py": "5b72753469f03a7b87dff972739dcfe993ccd5f902895161f28f3eb829354138",
+    "rembg/commands/p_command.py": "c8b60b8cde1898787fed4a88bf66d0b3ff410a7c2f27ed359b78d00782309423",
+    "rembg/commands/b_command.py": "6749355dd511d47c52143e1c249c4389998768fa2b1490c24401dc42e9129f45",
+    "rembg/commands/s_command.py": "a2cb9e216d6a390a6cf4d007945e6ec6f983adb0c05d2c239f6fbc8e189c43de",
+    "rembg/commands/d_command.py": "0ebab7c30f7537e42a33a149ce1008a0b774c01e8b8bd0f16c26f630ac8aed0a",
+    "rembg/commands/__init__.py": "bb82315a98f1be59b4a92ce375277869f02158dc914beea947b5f61149e58998"
+  },
+  "capturedAt": "2026-10-13T04:46:20.546Z",
+  "fixture": "Original UI; no uploads or image inference; no model weights downloaded",
+  "isolation": {
+    "server": "bubblewrap empty network/user/PID namespace; clean environment; selected read-only source bindings",
+    "browser": "same network namespace; fresh contexts; external requests aborted",
+    "providers": "none"
+  },
+  "captures": [
+    {
+      "page": "background-removal",
+      "state": "default",
+      "route": "/",
+      "device": "desktop",
+      "viewport": {
+        "width": 1365,
+        "height": 900
+      },
+      "scheme": "light",
+      "locale": "es-PE",
+      "file": "background-removal/default-desktop.png",
+      "metrics": {
+        "width": 1365,
+        "documentWidth": 1365,
+        "height": 900,
+        "h1": [],
+        "buttons": [
+          "Click to upload or drop files",
+          "Reset to default value",
+          "Reset to default value",
+          "Reset to default value",
+          "Clear",
+          "Submit",
+          "Usar v\u00eda API",
+          "Stop Recording",
+          "Configuraci\u00f3n"
+        ]
+      },
+      "errors": [],
+      "components": [
+        "UploadOnlyInterface",
+        "FileInput",
+        "ModelsDropdown",
+        "AlphaMatting",
+        "Thresholds",
+        "MaskControls",
+        "Arguments",
+        "OutputImage",
+        "SubmitQueue"
+      ],
+      "steps": [],
+      "readiness": {
+        "selector": "gradio-app",
+        "texts": [
+          "Models",
+          "Alpha matting",
+          "Foreground threshold",
+          "Background threshold",
+          "Erosion size",
+          "Only mask",
+          "Post process mask",
+          "Arguments",
+          "Output"
+        ],
+        "waitIdle": true
+      },
+      "kind": "original-render",
+      "diagnostics": {
+        "failedRequests": [],
+        "responses": []
+      }
+    },
+    {
+      "page": "background-removal",
+      "state": "default",
+      "route": "/",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scheme": "light",
+      "locale": "es-PE",
+      "file": "background-removal/default-mobile.png",
+      "metrics": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 1235,
+        "h1": [],
+        "buttons": [
+          "Click to upload or drop files",
+          "Reset to default value",
+          "Reset to default value",
+          "Reset to default value",
+          "Clear",
+          "Submit",
+          "Usar v\u00eda API",
+          "Stop Recording",
+          "Configuraci\u00f3n"
+        ]
+      },
+      "errors": [],
+      "components": [
+        "UploadOnlyInterface",
+        "FileInput",
+        "ModelsDropdown",
+        "AlphaMatting",
+        "Thresholds",
+        "MaskControls",
+        "Arguments",
+        "OutputImage",
+        "SubmitQueue"
+      ],
+      "steps": [],
+      "readiness": {
+        "selector": "gradio-app",
+        "texts": [
+          "Models",
+          "Alpha matting",
+          "Foreground threshold",
+          "Background threshold",
+          "Erosion size",
+          "Only mask",
+          "Post process mask",
+          "Arguments",
+          "Output"
+        ],
+        "waitIdle": true
+      },
+      "kind": "original-render",
+      "diagnostics": {
+        "failedRequests": [],
+        "responses": []
+      }
+    },
+    {
+      "page": "background-removal",
+      "state": "dark",
+      "route": "/",
+      "device": "desktop",
+      "viewport": {
+        "width": 1365,
+        "height": 900
+      },
+      "scheme": "dark",
+      "locale": "es-PE",
+      "file": "background-removal/dark-desktop.png",
+      "metrics": {
+        "width": 1365,
+        "documentWidth": 1365,
+        "height": 900,
+        "h1": [],
+        "buttons": [
+          "Click to upload or drop files",
+          "Reset to default value",
+          "Reset to default value",
+          "Reset to default value",
+          "Clear",
+          "Submit",
+          "Usar v\u00eda API",
+          "Stop Recording",
+          "Configuraci\u00f3n"
+        ]
+      },
+      "errors": [],
+      "components": [
+        "UploadOnlyInterface",
+        "FileInput",
+        "ModelsDropdown",
+        "AlphaMatting",
+        "Thresholds",
+        "MaskControls",
+        "Arguments",
+        "OutputImage",
+        "SubmitQueue"
+      ],
+      "steps": [],
+      "readiness": {
+        "selector": "gradio-app",
+        "texts": [
+          "Models",
+          "Alpha matting",
+          "Foreground threshold",
+          "Background threshold",
+          "Erosion size",
+          "Only mask",
+          "Post process mask",
+          "Arguments",
+          "Output"
+        ],
+        "waitIdle": true
+      },
+      "kind": "original-render",
+      "diagnostics": {
+        "failedRequests": [],
+        "responses": []
+      }
+    },
+    {
+      "page": "background-removal",
+      "state": "dark",
+      "route": "/",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scheme": "dark",
+      "locale": "es-PE",
+      "file": "background-removal/dark-mobile.png",
+      "metrics": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 1235,
+        "h1": [],
+        "buttons": [
+          "Click to upload or drop files",
+          "Reset to default value",
+          "Reset to default value",
+          "Reset to default value",
+          "Clear",
+          "Submit",
+          "Usar v\u00eda API",
+          "Stop Recording",
+          "Configuraci\u00f3n"
+        ]
+      },
+      "errors": [],
+      "components": [
+        "UploadOnlyInterface",
+        "FileInput",
+        "ModelsDropdown",
+        "AlphaMatting",
+        "Thresholds",
+        "MaskControls",
+        "Arguments",
+        "OutputImage",
+        "SubmitQueue"
+      ],
+      "steps": [],
+      "readiness": {
+        "selector": "gradio-app",
+        "texts": [
+          "Models",
+          "Alpha matting",
+          "Foreground threshold",
+          "Background threshold",
+          "Erosion size",
+          "Only mask",
+          "Post process mask",
+          "Arguments",
+          "Output"
+        ],
+        "waitIdle": true
+      },
+      "kind": "original-render",
+      "diagnostics": {
+        "failedRequests": [],
+        "responses": []
+      }
+    },
+    {
+      "page": "background-removal",
+      "state": "models-open",
+      "route": "/",
+      "device": "desktop",
+      "viewport": {
+        "width": 1365,
+        "height": 900
+      },
+      "scheme": "light",
+      "locale": "es-PE",
+      "file": "background-removal/models-open-desktop.png",
+      "metrics": {
+        "width": 1365,
+        "documentWidth": 1365,
+        "height": 900,
+        "h1": [],
+        "buttons": [
+          "Click to upload or drop files",
+          "Reset to default value",
+          "Reset to default value",
+          "Reset to default value",
+          "Clear",
+          "Submit",
+          "Usar v\u00eda API",
+          "Stop Recording",
+          "Configuraci\u00f3n"
+        ]
+      },
+      "errors": [],
+      "components": [
+        "UploadOnlyInterface",
+        "FileInput",
+        "ModelsDropdown",
+        "AlphaMatting",
+        "Thresholds",
+        "MaskControls",
+        "Arguments",
+        "OutputImage",
+        "SubmitQueue"
+      ],
+      "steps": [
+        {
+          "action": "click",
+          "selector": "input[role=\"combobox\"]"
+        }
+      ],
+      "readiness": {
+        "selector": "[role=\"listbox\"]",
+        "texts": [
+          "Models",
+          "Alpha matting",
+          "Foreground threshold",
+          "Background threshold",
+          "Erosion size",
+          "Only mask",
+          "Post process mask",
+          "Arguments",
+          "Output"
+        ],
+        "waitIdle": true
+      },
+      "kind": "original-render",
+      "diagnostics": {
+        "failedRequests": [],
+        "responses": []
+      }
+    },
+    {
+      "page": "background-removal",
+      "state": "models-open",
+      "route": "/",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scheme": "light",
+      "locale": "es-PE",
+      "file": "background-removal/models-open-mobile.png",
+      "metrics": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 1235,
+        "h1": [],
+        "buttons": [
+          "Click to upload or drop files",
+          "Reset to default value",
+          "Reset to default value",
+          "Reset to default value",
+          "Clear",
+          "Submit",
+          "Usar v\u00eda API",
+          "Stop Recording",
+          "Configuraci\u00f3n"
+        ]
+      },
+      "errors": [],
+      "components": [
+        "UploadOnlyInterface",
+        "FileInput",
+        "ModelsDropdown",
+        "AlphaMatting",
+        "Thresholds",
+        "MaskControls",
+        "Arguments",
+        "OutputImage",
+        "SubmitQueue"
+      ],
+      "steps": [
+        {
+          "action": "click",
+          "selector": "input[role=\"combobox\"]"
+        }
+      ],
+      "readiness": {
+        "selector": "[role=\"listbox\"]",
+        "texts": [
+          "Models",
+          "Alpha matting",
+          "Foreground threshold",
+          "Background threshold",
+          "Erosion size",
+          "Only mask",
+          "Post process mask",
+          "Arguments",
+          "Output"
+        ],
+        "waitIdle": true
+      },
+      "kind": "original-render",
+      "diagnostics": {
+        "failedRequests": [],
+        "responses": []
+      }
+    },
+    {
+      "page": "api-docs",
+      "state": "default",
+      "route": "/api",
+      "device": "desktop",
+      "viewport": {
+        "width": 1365,
+        "height": 900
+      },
+      "scheme": "light",
+      "locale": "es-PE",
+      "file": "api-docs/default-desktop.png",
+      "metrics": {
+        "width": 1365,
+        "documentWidth": 1365,
+        "height": 900,
+        "h1": [
+          "Rembg 0.0.0.post526.dev0+61c6c51 OAS 3.1"
+        ],
+        "buttons": [
+          "",
+          "GET/api/removeRemove from URL",
+          "Copy path to clipboard",
+          "get \u200b/api\u200b/remove",
+          "POST/api/removeRemove from Stream",
+          "Copy path to clipboard",
+          "post \u200b/api\u200b/remove",
+          "Schemas",
+          "Body_post_index_api_remove_post",
+          "Expand all",
+          "HTTPValidationError",
+          "Expand all",
+          "ValidationError",
+          "Expand all"
+        ]
+      },
+      "errors": [],
+      "components": [
+        "SwaggerUi"
+      ],
+      "steps": [],
+      "kind": "original-render"
+    },
+    {
+      "page": "api-docs",
+      "state": "default",
+      "route": "/api",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scheme": "light",
+      "locale": "es-PE",
+      "file": "api-docs/default-mobile.png",
+      "metrics": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 1696,
+        "h1": [
+          "Rembg 0.0.0.post526.dev0+61c6c51 OAS 3.1"
+        ],
+        "buttons": [
+          "",
+          "GET/api/removeRemove from URL",
+          "Copy path to clipboard",
+          "get \u200b/api\u200b/remove",
+          "POST/api/removeRemove from Stream",
+          "Copy path to clipboard",
+          "post \u200b/api\u200b/remove",
+          "Schemas",
+          "Body_post_index_api_remove_post",
+          "Expand all",
+          "HTTPValidationError",
+          "Expand all",
+          "ValidationError",
+          "Expand all"
+        ]
+      },
+      "errors": [],
+      "components": [
+        "SwaggerUi"
+      ],
+      "steps": [],
+      "kind": "original-render"
+    },
+    {
+      "page": "api-redoc",
+      "state": "default",
+      "route": "/redoc",
+      "device": "desktop",
+      "viewport": {
+        "width": 1365,
+        "height": 900
+      },
+      "scheme": "light",
+      "locale": "es-PE",
+      "file": "api-redoc/default-desktop.png",
+      "metrics": {
+        "width": 1365,
+        "documentWidth": 1365,
+        "height": 2970,
+        "h1": [
+          "Rembg (0.0.0.post526.dev0+61c6c51)"
+        ],
+        "buttons": [
+          "Show pattern",
+          "expand bgc",
+          "expand extras",
+          "200 Successful Response",
+          "422 Validation Error",
+          "get/api/remove",
+          "Copy",
+          "expand bgc",
+          "expand extras",
+          "Show pattern",
+          "200 Successful Response",
+          "422 Validation Error",
+          "post/api/remove",
+          "Copy"
+        ]
+      },
+      "errors": [],
+      "components": [
+        "ReDoc"
+      ],
+      "steps": [],
+      "kind": "original-render"
+    },
+    {
+      "page": "api-redoc",
+      "state": "default",
+      "route": "/redoc",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scheme": "light",
+      "locale": "es-PE",
+      "file": "api-redoc/default-mobile.png",
+      "metrics": {
+        "width": 390,
+        "documentWidth": 390,
+        "height": 4410,
+        "h1": [
+          "Rembg (0.0.0.post526.dev0+61c6c51)"
+        ],
+        "buttons": [
+          "Show pattern",
+          "expand bgc",
+          "expand extras",
+          "200 Successful Response",
+          "422 Validation Error",
+          "get/api/remove",
+          "Copy",
+          "expand bgc",
+          "expand extras",
+          "Show pattern",
+          "200 Successful Response",
+          "422 Validation Error",
+          "post/api/remove",
+          "Copy"
+        ]
+      },
+      "errors": [],
+      "components": [
+        "ReDoc"
+      ],
+      "steps": [],
+      "kind": "original-render"
+    },
+    {
+      "page": "api-docs",
+      "state": "post-expanded",
+      "route": "/api",
+      "device": "desktop",
+      "viewport": {
+        "width": 1365,
+        "height": 900
+      },
+      "scheme": "light",
+      "locale": "es-PE",
+      "file": "api-docs/post-expanded-desktop.png",
+      "metrics": {
+        "width": 1365,
+        "documentWidth": 1365,
+        "height": 2712,
+        "h1": [
+          "Rembg 0.0.0.post526.dev0+61c6c51 OAS 3.1"
+        ],
+        "buttons": [
+          "",
+          "GET/api/removeRemove from URL",
+          "Copy path to clipboard",
+          "get \u200b/api\u200b/remove",
+          "POST/api/removeRemove from Stream",
+          "Copy path to clipboard",
+          "post \u200b/api\u200b/remove",
+          "Try it out",
+          "Example Value",
+          "Schema",
+          "Example Value",
+          "Schema",
+          "Schemas",
+          "Body_post_index_api_remove_post",
+          "Expand all",
+          "HTTPValidationError",
+          "Expand all",
+          "ValidationError",
+          "Expand all"
+        ]
+      },
+      "errors": [],
+      "components": [
+        "SwaggerUi",
+        "OperationDetails",
+        "Parameters",
+        "Responses"
+      ],
+      "steps": [
+        {
+          "action": "click",
+          "selector": ".opblock.opblock-post .opblock-summary"
+        }
+      ],
+      "kind": "original-render"
+    },
+    {
+      "page": "api-docs",
+      "state": "post-expanded",
+      "route": "/api",
+      "device": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scheme": "light",
+      "locale": "es-PE",
+      "file": "api-docs/post-expanded-mobile.png",
+      "metrics": {
+        "width": 390,
+        "documentWidth": 563,
+        "height": 6055,
+        "h1": [
+          "Rembg 0.0.0.post526.dev0+61c6c51 OAS 3.1"
+        ],
+        "buttons": [
+          "",
+          "GET/api/removeRemove from URL",
+          "Copy path to clipboard",
+          "get \u200b/api\u200b/remove",
+          "POST/api/removeRemove from Stream",
+          "Copy path to clipboard",
+          "post \u200b/api\u200b/remove",
+          "Try it out",
+          "Example Value",
+          "Schema",
+          "Example Value",
+          "Schema",
+          "Schemas",
+          "Body_post_index_api_remove_post",
+          "Expand all",
+          "HTTPValidationError",
+          "Expand all",
+          "ValidationError",
+          "Expand all"
+        ]
+      },
+      "errors": [],
+      "components": [
+        "SwaggerUi",
+        "OperationDetails",
+        "Parameters",
+        "Responses"
+      ],
+      "steps": [
+        {
+          "action": "click",
+          "selector": ".opblock.opblock-post .opblock-summary"
+        }
+      ],
+      "kind": "original-render"
+    }
+  ],
+  "errors": [],
+  "blockedRequests": [
+    {
+      "page": "api-docs",
+      "state": "default",
+      "host": "fastapi.tiangolo.com"
+    },
+    {
+      "page": "api-docs",
+      "state": "default",
+      "host": "fastapi.tiangolo.com"
+    },
+    {
+      "page": "api-redoc",
+      "state": "default",
+      "host": "fonts.googleapis.com"
+    },
+    {
+      "page": "api-redoc",
+      "state": "default",
+      "host": "fastapi.tiangolo.com"
+    },
+    {
+      "page": "api-redoc",
+      "state": "default",
+      "host": "cdn.redoc.ly"
+    },
+    {
+      "page": "api-redoc",
+      "state": "default",
+      "host": "fastapi.tiangolo.com"
+    },
+    {
+      "page": "api-redoc",
+      "state": "default",
+      "host": "fastapi.tiangolo.com"
+    },
+    {
+      "page": "api-redoc",
+      "state": "default",
+      "host": "fonts.googleapis.com"
+    },
+    {
+      "page": "api-redoc",
+      "state": "default",
+      "host": "fastapi.tiangolo.com"
+    },
+    {
+      "page": "api-redoc",
+      "state": "default",
+      "host": "cdn.redoc.ly"
+    },
+    {
+      "page": "api-redoc",
+      "state": "default",
+      "host": "fastapi.tiangolo.com"
+    },
+    {
+      "page": "api-redoc",
+      "state": "default",
+      "host": "fastapi.tiangolo.com"
+    },
+    {
+      "page": "api-redoc",
+      "state": "default",
+      "host": "fastapi.tiangolo.com"
+    },
+    {
+      "page": "api-docs",
+      "state": "post-expanded",
+      "host": "fastapi.tiangolo.com"
+    },
+    {
+      "page": "api-docs",
+      "state": "post-expanded",
+      "host": "fastapi.tiangolo.com"
+    },
+    {
+      "page": "api-docs",
+      "state": "post-expanded",
+      "host": "fastapi.tiangolo.com"
+    },
+    {
+      "page": "api-docs",
+      "state": "post-expanded",
+      "host": "fastapi.tiangolo.com"
+    }
+  ],
+  "serverExternalProbe": "blocked; no outbound network",
+  "browser": "151.0.7922.137",
+  "offlineAssets": {
+    "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js": {
+      "file": "assets/swagger-ui-bundle.js",
+      "contentType": "application/javascript",
+      "sha256": "6b3bfcaff3fc82c0e6992ca4b370c4f22970dec35fff60d229302b3ee7688715"
+    },
+    "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css": {
+      "file": "assets/swagger-ui.css",
+      "contentType": "text/css",
+      "sha256": "1ac324f7dcd27e4b9386b4bd6421271ec147e922a22c05ba24b11515e9aa6321"
+    },
+    "https://cdn.jsdelivr.net/npm/redoc@2/bundles/redoc.standalone.js": {
+      "file": "assets/redoc.standalone.js",
+      "contentType": "application/javascript",
+      "sha256": "dcaf76612bc4a3fbcc923a8966dee2f6146a5f32e5ce1b6f02dd60cbbf89500b"
+    }
+  },
+  "batches": [
+    {
+      "name": "design-ui-retry",
+      "capturedAt": "2026-10-13T04:46:20.546Z"
+    },
+    {
+      "name": "design-ui-extra",
+      "capturedAt": "2026-10-13T04:47:50.735Z"
+    },
+    {
+      "name": "design-api-retry",
+      "capturedAt": "2026-10-13T04:36:46.871Z"
+    }
+  ],
+  "initialAttempt": "Retained privately: UI captured before component hydration, and API dependencies blocked; replaced with complete verified original renders, no application source modified.",
+  "dependencyVersions": {
+    "python": "3.13.5",
+    "gradio": "6.29.1",
+    "fastapi": "0.142.2",
+    "swaggerUIJs": "5.33.2",
+    "swaggerUICss": "5.33.0",
+    "redoc": "2.5.4"
+  },
+  "runtimeLimits": [
+    "NUMBA_DISABLE_JIT=1 for UI startup only; not inference/performance validation",
+    "No uploads, no inference, no model downloads",
+    "Server and browser without outbound network; public CDN assets prepared offline with exact hashes",
+    "Mobile generated Swagger tag description is compressed vertically; original CSS preserved"
+  ]
+}
