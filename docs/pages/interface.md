@@ -30,3 +30,7 @@ grafo ONNX mínimo; no acredita calidad del recorte ni compatibilidad GPU.
 Pendientes de una futura exposición: autenticación/proxy, límites de tráfico,
 cuotas de disco/memoria y deadline de inferencia que pueda interrumpirse. Este
 diagnóstico no activa el servidor ni cambia su configuración.
+
+## Evidencia visual posterior · 12/10
+
+El [catálogo visual](../design/background-removal/README.md) añade render original aislado, claro/oscuro y selector de modelos, con fuente59c892d y versiones de dependencias verificadas. Incluye además [Swagger](../design/api-docs/README.md) y [ReDoc](../design/api-redoc/README.md). Esta evidencia posterior sí muestra la interfaz, pero conserva pendiente la inferencia real y no cambia el alcance pasivo del corte10/10 anterior.
